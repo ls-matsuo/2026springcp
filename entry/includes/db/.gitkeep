@@ -1,0 +1,1 @@
+# .db はこのディレクトリに格納（.gitignore で *.db / *.db.bak を除外）

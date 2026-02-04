@@ -1,0 +1,3 @@
+# SQLite（ローカル・本番で作成されるデータ）
+entry/includes/db/*.db
+entry/includes/db/*.db.bak

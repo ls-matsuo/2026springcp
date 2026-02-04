@@ -1,0 +1,28 @@
+# 開発環境
+# エンドポイント: http://localhost:8080/2026springcp/entry/
+# （本番は https://eneoschargeplus.com/2026springcp/entry/ ）
+# SQLite: PHP 内蔵（pdo_sqlite）。DB ファイルは entry/includes/ に配置し、ボリュームで永続化。
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: containers/web/Dockerfile
+    image: 2026springcp-web:latest
+    container_name: 2026springcp-web
+    volumes:
+      - .:/var/www/html/2026springcp
+    ports:
+      - "8080:80"
+    depends_on:
+      - mailpit
+    environment:
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025   # コンテナ内は 1025。ホスト側ポート被り時は mailpit の ports を 1026 等に変更
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: 2026springcp-mailpit
+    ports:
+      - "8026:8025"   # Web UI（8025 が他で使われている場合は 8026 に変更）
+      - "1026:1025"   # SMTP（1025 が他で使われている場合は 1026 に変更）

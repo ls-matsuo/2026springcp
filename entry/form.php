@@ -1,3 +1,23 @@
+<?php
+session_start();
+
+// POST かつ mode=send のときは送信処理（includes/send.php で完結）
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['mode'] ?? '') === 'send') {
+    require_once __DIR__ . '/includes/send.php';
+    exit;
+}
+
+// CSRF トークン生成
+$token = bin2hex(random_bytes(32));
+$_SESSION['token'] = $token;
+
+// エラー表示（送信処理から戻ってきた場合。$errors は 表示場所 => 表示文言）
+$errors = $_SESSION['errors'] ?? [];
+$old = $_SESSION['old'] ?? [];
+unset($_SESSION['errors'], $_SESSION['old']);
+
+require_once __DIR__ . '/includes/messages.php';
+?>
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -56,7 +76,21 @@
           </div>
 
           <!-- Form -->
-          <form class="c-form" action="" method="post">
+          <form class="c-form" action="form.php" method="post">
+            <input type="hidden" name="mode" value="send">
+            <input type="hidden" name="token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
+
+            <?php
+            $summaryErrors = array_diff_key($errors, array_flip(['nickname', 'email']));
+            if (!empty($summaryErrors)):
+            ?>
+            <div class="c-form__errors" role="alert">
+              <?php foreach ($summaryErrors as $location => $msg): ?>
+              <p class="c-form__error"><?php echo htmlspecialchars(is_string($msg) ? $msg : ($errorMessages[$msg] ?? $msg), ENT_QUOTES, 'UTF-8'); ?></p>
+              <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+
             <!-- ニックネーム -->
             <div class="c-form__group">
               <label class="c-form__label" for="nickname">ニックネーム</label>
@@ -67,11 +101,14 @@
                 class="c-form__input"
                 placeholder="全角10文字以内でご入力ください"
                 maxlength="10"
+                value="<?php echo htmlspecialchars($old['nickname'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
                 required
               >
               <p class="c-form__note">※ 全角10文字以内でご入力ください</p>
               <p class="c-form__note">※ 不適切なニックネームの場合は参加をお断りする場合がございます</p>
-              <p class="c-form__note c-form__note--error">× 申し訳ございません。このニックネームはすでに使用されています。別のニックネームをお試しください。</p>
+              <?php if (isset($errors['nickname'])): ?>
+              <p class="c-form__note c-form__note--error">× <?php echo htmlspecialchars($errorMessages[$errors['nickname']] ?? $errors['nickname'], ENT_QUOTES, 'UTF-8'); ?></p>
+              <?php endif; ?>
             </div>
 
             <!-- メールアドレス -->
@@ -83,10 +120,13 @@
                 name="email"
                 class="c-form__input"
                 placeholder="example@email.com"
+                value="<?php echo htmlspecialchars($old['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
                 required
               >
               <p class="c-form__note">※ ENEOS Charge Plusにご登録されているメールアドレスを入力してください。登録情報と照合できない場合、エントリーは無効となります。</p>
-              <p class="c-form__note c-form__note--error">× 既にエントリー済みのメールアドレスです。</p>
+              <?php if (isset($errors['email'])): ?>
+              <p class="c-form__note c-form__note--error">× <?php echo htmlspecialchars($errorMessages[$errors['email']] ?? $errors['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+              <?php endif; ?>
             </div>
 
             <!-- 規約 -->
