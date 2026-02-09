@@ -46,14 +46,14 @@ require_once __DIR__ . '/includes/messages.php';
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <script type="module" crossorigin src="./assets/main.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/style.css">
+    <script type="module" crossorigin src="../assets/main.js"></script>
+    <link rel="stylesheet" crossorigin href="../assets/style.css">
   </head>
   <body>
     <!-- Header -->
     <header class="l-header">
       <div class="l-header__logo">
-        <img src="./img/logo_eneos.svg" alt="ENEOS" width="103" height="24">
+        <img src="../img/logo_eneos.svg" alt="ENEOS" width="103" height="24">
       </div>
     </header>
 
@@ -62,7 +62,7 @@ require_once __DIR__ . '/includes/messages.php';
         <!-- Hero -->
         <header class="p-entry__hero">
           <h1 class="p-entry__logo">
-            <img src="./img/logo_challenge.svg" alt="ENEOS Charge Plus 30日間 充電ランキングチャレンジ">
+            <img src="../img/logo_challenge.svg" alt="ENEOS Charge Plus 30日間 充電ランキングチャレンジ">
           </h1>
           <p class="p-entry__subtitle">エントリーフォーム</p>
           <p class="p-entry__lead">参加対象者：ENEOS Charge Plus会員の方</p>
@@ -76,7 +76,7 @@ require_once __DIR__ . '/includes/messages.php';
           </div>
 
           <!-- Form -->
-          <form class="c-form" action="form.php" method="post">
+          <form class="c-form" action="index.php" method="post">
             <input type="hidden" name="mode" value="send">
             <input type="hidden" name="token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
 

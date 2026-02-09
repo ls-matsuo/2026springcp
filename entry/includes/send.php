@@ -43,7 +43,7 @@ if (!$agree) {
 if ($errors) {
     $_SESSION['errors'] = $errors;
     $_SESSION['old'] = ['nickname' => $nicknameRaw, 'email' => $emailRaw];
-    header('Location: form.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -61,11 +61,11 @@ $pdo = new PDO('sqlite:' . $dbPath, null, null, [
 ]);
 
 // テーブル存在チェック（存在しなければエラーで終了）
-$stmt = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='cp_entries'");
+$stmt = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='entries'");
 if ($stmt->fetch() === false) {
     $_SESSION['errors'] = ['general' => $errorMessages['db_not_ready']];
     $_SESSION['old'] = ['nickname' => $nicknameRaw, 'email' => $emailRaw];
-    header('Location: form.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -75,7 +75,7 @@ $normEmail    = $normalize($emailRaw);
 $dupNickname  = false;
 $dupEmail     = false;
 
-$stmt = $pdo->query("SELECT nickname, email FROM cp_entries");
+$stmt = $pdo->query("SELECT nickname, email FROM entries");
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     if ($normalize($row['nickname']) === $normNickname) {
         $dupNickname = true;
@@ -95,7 +95,7 @@ if ($dupEmail) {
 if ($errors) {
     $_SESSION['errors'] = $errors;
     $_SESSION['old'] = ['nickname' => $nicknameRaw, 'email' => $emailRaw];
-    header('Location: form.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -104,7 +104,7 @@ if ($errors) {
 $timeProvider = new TimeProvider();
 $createdAt = $timeProvider->now();
 $pdo->beginTransaction();
-$stmtInsert = $pdo->prepare("INSERT INTO cp_entries (email, nickname, created_at) VALUES (?, ?, ?)");
+$stmtInsert = $pdo->prepare("INSERT INTO entries (email, nickname, created_at) VALUES (?, ?, ?)");
 $stmtInsert->execute([$emailTrimmed, $nicknameTrimmed, $createdAt]);
 
 // 設定ファイル読み込み
@@ -139,13 +139,14 @@ try {
     $mail->clearAddresses();
     $mail->addAddress($emailTrimmed);
     $mail->Subject = $mailSubject;
-    $mail->Body = sprintf($mailBody, $nicknameTrimmed);
+    $mail->isHTML(true);
+    $mail->Body = sprintf($mailBody, htmlspecialchars($nicknameTrimmed, ENT_QUOTES, 'UTF-8'));
 
     $mail->send();
 
     $pdo->commit();
     unset($_SESSION['token']);
-    header('Location: thanks.html');
+    header('Location: ../thanks.html');
     exit;
 } catch (Exception $e) {
     $pdo->rollBack();

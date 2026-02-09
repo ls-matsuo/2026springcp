@@ -6,6 +6,6 @@ return [
     'user'      => '',
     'pass'      => '',
     'secure'    => '',
-    'from'      => 'test@example.com',
-    'from_name' => 'ENEOS Charge Plus',
+    'from'      => 'entry@eneoschargeplus.com',
+    'from_name' => 'entry@eneoschargeplus.com',
 ];

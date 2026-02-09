@@ -18,13 +18,13 @@ try {
     exit(1);
 }
 
-$tables = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='cp_entries'")->fetchAll(PDO::FETCH_COLUMN);
+$tables = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='entries'")->fetchAll(PDO::FETCH_COLUMN);
 if (empty($tables)) {
-    echo "cp_entries テーブルが存在しません（スキーマ未適用の可能性）。\n";
+    echo "entries テーブルが存在しません（スキーマ未適用の可能性）。\n";
     exit(0);
 }
 
-$count = (int) $pdo->query('SELECT COUNT(*) FROM cp_entries')->fetchColumn();
+$count = (int) $pdo->query('SELECT COUNT(*) FROM entries')->fetchColumn();
 if ($count === 0) {
     echo "スキーマのみ適用（データなし）\n";
 } else {

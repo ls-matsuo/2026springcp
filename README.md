@@ -9,7 +9,8 @@ ENEOS Charge Plus キャンペーンのエントリーフォームです。PHP +
 docker compose up -d --build
 
 # ブラウザで開く
-# http://localhost:8080/2026springcp/entry/
+# トップ: http://localhost:8080/2026springcp/
+# エントリーフォーム: http://localhost:8080/2026springcp/entry/
 
 #メール確認用 Mailpit
 # http://localhost:8026
@@ -23,14 +24,16 @@ docker compose up -d --build
 
 ```
 2026springcp/
-├── entry/                 # エントリーポイント
-│   ├── index.html        # トップページ
-│   ├── form.php          # フォーム表示・送信受付
-│   ├── thanks.html       # 完了画面
-│   └── includes/         # 処理・設定（send.php, config.php, db/ など）
-├── containers/            # Docker まわり（web, database 用スクリプト等）
+├── index.html             # トップページ
+├── thanks.html            # 完了画面
+├── assets/                # CSS・JS（main.js, style.css）
+├── img/                   # 画像（ロゴ等）
+├── entry/                 # エントリー関連
+│   ├── index.php          # フォーム表示・送信受付
+│   └── includes/          # 処理・設定（send.php, config.php, db/ など）
+├── containers/             # Docker まわり（web, database 用スクリプト等）
 ├── docker-compose.yml
-└── docs/                  # ドキュメント
+└── docs/                   # ドキュメント
 ```
 
 ## ドキュメント（docs/）
