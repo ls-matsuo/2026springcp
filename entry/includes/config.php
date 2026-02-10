@@ -1,9 +1,10 @@
 <?php
 /**
  * メール設定
- * .env を読み込み $_ENV / putenv に設定したうえで、getenv() で取得する。
+ * .env を読み込み、アプリ内の $env に保持したうえで返す。
  */
 
+$env = [];
 $envPath = __DIR__ . '/.env';
 
 if (is_readable($envPath)) {
@@ -37,18 +38,17 @@ if (is_readable($envPath)) {
             $value = substr($value, 1, -1);
         }
 
-        $_ENV[$name] = $value;
-        putenv("{$name}={$value}");
+        $env[$name] = $value;
     }
 }
 
 return [
-    'host'      => getenv('MAIL_HOST') ?: '',
-    'port'      => (int) (getenv('MAIL_PORT') ?: '0'),
-    'auth'      => filter_var(getenv('MAIL_AUTH') ?: '', FILTER_VALIDATE_BOOLEAN),
-    'user'      => getenv('MAIL_USER') ?: '',
-    'pass'      => getenv('MAIL_PASS') ?: '',
-    'secure'    => getenv('MAIL_SECURE') ?: '',
-    'from'      => getenv('MAIL_FROM') ?: '',
-    'from_name' => getenv('MAIL_FROM_NAME') ?: '',
+    'host'      => $env['MAIL_HOST'] ?? '',
+    'port'      => (int) ($env['MAIL_PORT'] ?? '0'),
+    'auth'      => filter_var($env['MAIL_AUTH'] ?? '', FILTER_VALIDATE_BOOLEAN),
+    'user'      => $env['MAIL_USER'] ?? '',
+    'pass'      => $env['MAIL_PASS'] ?? '',
+    'secure'    => $env['MAIL_SECURE'] ?? '',
+    'from'      => $env['MAIL_FROM'] ?? '',
+    'from_name' => $env['MAIL_FROM_NAME'] ?? '',
 ];
