@@ -4,7 +4,7 @@
  * .env を読み込み $_ENV / putenv に設定したうえで、getenv() で取得する。
  */
 
-$envPath = __DIR__ . '/../../.env';
+$envPath = __DIR__ . '/.env';
 
 if (is_readable($envPath)) {
     $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);

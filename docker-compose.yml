@@ -16,7 +16,6 @@ services:
       - "8080:80"
     depends_on:
       - mailpit
-    # メール設定は .env のみ（環境変数は使わない）。.env.example をコピーして .env を作成すること。
 
   mailpit:
     image: axllent/mailpit:latest
