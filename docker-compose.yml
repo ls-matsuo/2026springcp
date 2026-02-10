@@ -16,9 +16,7 @@ services:
       - "8080:80"
     depends_on:
       - mailpit
-    environment:
-      MAIL_HOST: mailpit
-      MAIL_PORT: 1025   # コンテナ内は 1025。ホスト側ポート被り時は mailpit の ports を 1026 等に変更
+    # メール設定は .env のみ（環境変数は使わない）。.env.example をコピーして .env を作成すること。
 
   mailpit:
     image: axllent/mailpit:latest

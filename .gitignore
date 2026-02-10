@@ -1,3 +1,6 @@
+# 環境依存設定（本番の SMTP 認証情報等は .env に記載し、リポジトリには含めない）
+.env
+
 # SQLite（ローカル・本番で作成されるデータ）
 entry/includes/db/*.db
 entry/includes/db/*.db.bak

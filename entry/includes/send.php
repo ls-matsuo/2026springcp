@@ -16,7 +16,7 @@ if (!isset($_POST['token']) || $_POST['token'] !== $_SESSION['token']) {
 // 入力取得（重複判定は正規化で比較、保存はトリムした値でランキング表示用）
 $nicknameRaw = $_POST['nickname'] ?? '';
 $emailRaw    = $_POST['email'] ?? '';
-$agree        = isset($_POST['agree']);
+$agree       = isset($_POST['agree']);
 
 $errors = [];
 
@@ -54,7 +54,7 @@ $normalize = function ($s) {
     return mb_strtolower($s, 'UTF-8');
 };
 
-// DB: 接続（スキーマは別途 schema.sql を適用すること）
+// DB接続
 $dbPath = __DIR__ . '/db/2026springcp.db';
 $pdo = new PDO('sqlite:' . $dbPath, null, null, [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -116,7 +116,7 @@ try {
     // SMTP 設定
     $mail->isSMTP();
     $mail->Host = $config['host'];
-    $mail->SMTPAuth = isset($config['auth']) ? (bool)$config['auth'] : !empty($config['user']);
+    $mail->SMTPAuth = $config['auth'];
     $mail->Username = $config['user'];
     $mail->Password = $config['pass'];
     $mail->SMTPSecure = $config['secure'];
@@ -125,15 +125,6 @@ try {
     // 送信元
     $mail->setFrom($config['from'], $config['from_name']);
     $mail->CharSet = 'UTF-8';
-
-    // 事務局向け：（必要なら有効化）
-    // $mail->clearAddresses();
-    // $mail->addAddress($config['from']);
-    // $mail->Subject = '【キャンペーン】エントリーがありました';
-    // $mail->Body    =
-    //     "ニックネーム: {$nicknameRaw}\n" .
-    //     "メールアドレス: {$emailRaw}\n";
-    // $mail->send();
 
     // 申込み者向け：自動返信（登録メールアドレス宛に完了メール）
     $mail->clearAddresses();
