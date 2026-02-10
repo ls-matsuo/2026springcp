@@ -116,7 +116,7 @@ try {
     // SMTP 設定
     $mail->isSMTP();
     $mail->Host = $config['host'];
-    $mail->SMTPAuth = !empty($config['user']);
+    $mail->SMTPAuth = isset($config['auth']) ? (bool)$config['auth'] : !empty($config['user']);
     $mail->Username = $config['user'];
     $mail->Password = $config['pass'];
     $mail->SMTPSecure = $config['secure'];

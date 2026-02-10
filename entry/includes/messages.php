@@ -24,4 +24,4 @@ $mailBody =
 . '<p>▼賞品の詳細は<a href="https://eneoschargeplus.com/2026springcp/">こちら</a><br>充電ランキングに応じて、当たる賞品が変わります！<br>キャンペーン期間中にたくさん充電して、豪華賞品をゲットしよう！</p>'
 . '<p>※本メールは送信専用のメールアドレスで送信しております。本メールに返信いただいてもご回答できませんので、あらかじめご了承ください。</p>'
 . '<hr>'
-. '<p><a href="https://eneos.jp/company/privacy/">個人情報保護方針</a><br>ENEOS株式会社<br>URL：www.eneos.co.jp<br>〒100-8162東京都千代田区大手町一丁目1番2号</p>';
+. '<p><a href="https://www.eneos.co.jp/privacy/">個人情報保護方針</a><br>ENEOS株式会社<br>URL：www.eneos.co.jp<br>〒100-8162東京都千代田区大手町一丁目1番2号</p>';
